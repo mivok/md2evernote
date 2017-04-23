@@ -17,6 +17,12 @@ module Kramdown
         end
       end
 
+      def convert_text(el, indent)
+        # Evernote will run text together withoutspaces if you don't convert
+        # newlines.
+        escape_html(el.value.gsub(/\n/, ' '))
+      end
+
       def convert_codeblock(el, indent)
         # Outputs codeblocks using evernote's custom style for code blocks.
         # We don't need any special processing kramdown provides in the
@@ -25,6 +31,10 @@ module Kramdown
         result = escape_html(el.value)
         result.chomp!
         result.gsub!("\n", "</div><div>")
+        # Evernote encodes multiple spaces as alternating nbsp and normal
+        # spaces, and doesn't escape them.
+        result.gsub!("  ", "\u00a0 ")
+        result.gsub!("  ", " \u00a0") # deal with odd numbers of spaces
         "#{' '*indent}<div style=\"#{CODEBLOCK_STYLE}\"><div>#{result}</div></div>\n"
       end
 

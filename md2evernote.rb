@@ -5,7 +5,7 @@ require_relative 'kramdown_evernote_html'
 
 def load_doc(filename)
   text = File.read(filename)
-  Kramdown::Document.new(text)
+  Kramdown::Document.new(text, :input => :GFM, :hard_wrap => false)
 end
 
 def extract_title(doc)
