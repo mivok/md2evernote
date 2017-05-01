@@ -59,6 +59,14 @@ def generate_enex(notes)
   enex.to_s
 end
 
+if ARGV.length < 1
+  puts "Usage: #{$0} [FILE.md [FILE.md ...]]"
+  puts
+  puts "Reads in markdown files and creates an evernote .enex file containing"
+  puts "each markdown file as a note."
+  exit 1
+end
+
 notes = []
 ARGV.each do |f|
   doc = load_doc(f)
